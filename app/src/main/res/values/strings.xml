@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Dicoding Event</string>
+    <string name="title_home">Home</string>
+    <string name="title_clear_event">Event Completed</string>
+    <string name="event_name">Nama Event</string>
+    <string name="description">Description</string>
+    <string name="event_date">Tanggal Event</string>
+    <string name="event_owner">Penyelenggara</string>
+    <string name="time_event">Waktu Event</string>
+    <string name="quota_event">Sisa Kuota</string>
+    <string name="register_here">Register Here!</string>
+    <string name="dicoding_event">Dicoding Event</string>
+    <string name="recomended_event_for_you">Recomended Event For You!</string>
+</resources>
