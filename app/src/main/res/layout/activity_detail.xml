@@ -7,10 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.detail.DetailActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/img_item_photo_detail"
@@ -18,97 +17,122 @@
             android:layout_height="250dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            tools:src="@tools:sample/avatars"/>
+            tools:src="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/tvEventName"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@id/img_item_photo_detail"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvEventName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:text="@string/event_name"
+                android:textColor="@color/black" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        style="@style/TextContent.BodyMedium.Bold"
+                        android:layout_marginEnd="16dp"
+                        android:text="@string/event_owner" />
+
+                    <TextView
+                        style="@style/TextContent.BodyMedium.Gray"
+                        android:id="@+id/tvEventOwner"
+                        android:layout_weight="1"
+                        android:text="@string/event_owner" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        style="@style/TextContent.BodyMedium.Bold"
+                        android:layout_marginEnd="16dp"
+                        android:text="@string/time_event" />
+
+                    <TextView
+                        style="@style/TextContent.BodyMedium.Gray"
+                        android:id="@+id/tvEventBeginTime"
+                        android:layout_weight="1"
+                        android:text="@string/time_event" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        style="@style/TextContent.BodyMedium.Bold"
+                        android:layout_marginEnd="16dp"
+                        android:text="@string/quota_event" />
+
+                    <TextView
+                        style="@style/TextContent.BodyMedium.Gray"
+                        android:id="@+id/tvEventQuota"
+                        android:layout_weight="1"
+                        android:text="@string/quota_event" />
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:layout_marginBottom="15dp"
+                android:text="@string/description" />
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/register_here"
+                app:cornerRadius="8dp"
+                style="@style/ButtonGeneral.SecondaryVariant" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_fav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/img_item_photo"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:text="@string/event_name"
-            android:textColor="@color/black"
-            />
+            android:layout_alignBottom="@+id/img_item_photo_detail"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="327dp"
+            android:layout_marginTop="220dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="-23dp"
+            android:backgroundTint="@color/gray_dark"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/baseline_favorite_border_24"
+            app:tint="@android:color/white"
+            android:contentDescription="@string/fab_add_fav"/>
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="20dp">
-
-                <TextView
-                    style="@style/TextContent.BodyMedium.Bold"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/event_owner" />
-
-                <TextView
-                    style="@style/TextContent.BodyMedium.Gray"
-                    android:id="@+id/tvEventOwner"
-                    android:layout_weight="1"
-                    android:text="@string/event_owner" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    style="@style/TextContent.BodyMedium.Bold"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/time_event" />
-
-                <TextView
-                    style="@style/TextContent.BodyMedium.Gray"
-                    android:id="@+id/tvEventBeginTime"
-                    android:layout_weight="1"
-                    android:text="@string/time_event" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    style="@style/TextContent.BodyMedium.Bold"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/quota_event" />
-
-                <TextView
-                    style="@style/TextContent.BodyMedium.Gray"
-                    android:id="@+id/tvEventQuota"
-                    android:layout_weight="1"
-                    android:text="@string/quota_event" />
-            </TableRow>
-        </TableLayout>
-
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
-            android:layout_marginBottom="15dp"
-            android:text="@string/description"/>
-
-        <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/register_here"
-            app:cornerRadius="8dp"
-            style="@style/ButtonGeneral.SecondaryVariant"/>
-    </LinearLayout>
-
+    </RelativeLayout>
 </ScrollView>

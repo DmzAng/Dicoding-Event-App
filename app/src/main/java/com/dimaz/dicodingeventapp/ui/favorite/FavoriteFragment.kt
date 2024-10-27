@@ -1,4 +1,4 @@
-package com.dimaz.dicodingeventapp.ui.home
+package com.dimaz.dicodingeventapp.ui.favorite
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -7,24 +7,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dimaz.dicodingeventapp.R
-import com.dimaz.dicodingeventapp.databinding.FragmentHomeBinding
+import com.dimaz.dicodingeventapp.data.local.room.EventDatabase
+import com.dimaz.dicodingeventapp.databinding.FragmentFavoriteBinding
 import com.dimaz.dicodingeventapp.ui.EventAdapter
 import com.dimaz.dicodingeventapp.ui.setting.SettingViewModel
 import com.dimaz.mydatastore.SettingPreferences
 import com.dimaz.mydatastore.ViewModelFactory
 import com.dimaz.mydatastore.dataStore
 
-class HomeFragment : Fragment() {
+class FavoriteFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var eventAdapter: EventAdapter
-    private val homeViewModel: HomeViewModel by activityViewModels()
+    private val favoriteViewModel: FavoriteViewModel by viewModels {
+        FavoriteViewModelFactory(EventDatabase.getInstance(requireContext()))
+    }
 
     private lateinit var settingViewModel: SettingViewModel
 
@@ -32,7 +36,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
 
         val pref = SettingPreferences.getInstance(requireContext().dataStore)
         settingViewModel = ViewModelProvider(this, ViewModelFactory(pref)).get(SettingViewModel::class.java)
@@ -54,21 +58,16 @@ class HomeFragment : Fragment() {
             }
         )
 
-        binding.rvEvent.layoutManager = LinearLayoutManager(context)
         eventAdapter = EventAdapter(isDarkModeActive)
+        binding.rvEvent.layoutManager = LinearLayoutManager(context)
         binding.rvEvent.adapter = eventAdapter
 
-        setupObserver()
-    }
+        favoriteViewModel.favoriteEvents.observe(viewLifecycleOwner, Observer { favoriteEvents ->
+            binding.progressBar.visibility = View.GONE
+            eventAdapter.submitList(favoriteEvents)
+        })
 
-    private fun setupObserver() {
-        homeViewModel.eventList.observe(viewLifecycleOwner) { eventList ->
-            eventAdapter.submitList(eventList)
-        }
-
-        homeViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
+        binding.progressBar.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {

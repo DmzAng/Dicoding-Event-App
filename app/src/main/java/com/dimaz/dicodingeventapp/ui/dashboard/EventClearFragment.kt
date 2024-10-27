@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dimaz.dicodingeventapp.databinding.FragmentDashboardBinding
 import com.dimaz.dicodingeventapp.ui.EventAdapter
+import com.dimaz.dicodingeventapp.ui.setting.SettingViewModel
+import com.dimaz.mydatastore.SettingPreferences
+import com.dimaz.mydatastore.ViewModelFactory
+import com.dimaz.mydatastore.dataStore
 
 class EventClearFragment : Fragment() {
 
@@ -17,15 +22,23 @@ class EventClearFragment : Fragment() {
 
     private lateinit var eventAdapter: EventAdapter
     private val evenClearViewModel: EvenClearViewModel by activityViewModels()
+    private lateinit var settingViewModel: SettingViewModel
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
-        binding.rvEventClear.layoutManager = LinearLayoutManager(context)
-        eventAdapter = EventAdapter()
-        binding.rvEventClear.adapter = eventAdapter
+        val pref = SettingPreferences.getInstance(requireContext().dataStore)
+        settingViewModel = ViewModelProvider(this, ViewModelFactory(pref)).get(SettingViewModel::class.java)
 
-        setupObserver()
+        settingViewModel.getThemeSettings().observe(viewLifecycleOwner) { isDarkModeActive ->
+            eventAdapter = EventAdapter(isDarkModeActive)
+            binding.rvEventClear.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = eventAdapter
+            }
+            setupObserver()
+        }
         return binding.root
     }
 

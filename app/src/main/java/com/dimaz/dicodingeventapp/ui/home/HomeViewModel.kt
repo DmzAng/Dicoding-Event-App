@@ -5,18 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dimaz.dicodingeventapp.data.conect.ApiConfig
-import com.dimaz.dicodingeventapp.data.response.ListEventsItem
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import android.text.Html
+import com.dimaz.dicodingeventapp.data.local.entity.EventEntity
+import com.dimaz.dicodingeventapp.data.remote.connect.ApiConfig
 
 class HomeViewModel : ViewModel() {
 
-    private val _eventList = MutableLiveData<List<ListEventsItem>>()
-    val eventList: LiveData<List<ListEventsItem>> = _eventList
+    private val _eventList = MutableLiveData<List<EventEntity>>()
+    val eventList: LiveData<List<EventEntity>> = _eventList
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -39,11 +39,22 @@ class HomeViewModel : ViewModel() {
             try {
                 val apiService = ApiConfig.getApiService()
                 val response = apiService.getEvents()
+
                 val upcomingEvents = response.listEvents.filter { event ->
                     isUpcomingEvent(event.beginTime)
                 }.map { event ->
-                    event.copy(description = extractRelevantDescription(event.description))
+                    EventEntity(
+                        name = event.name,
+                        description = extractRelevantDescription(event.description),
+                        beginTime = event.beginTime,
+                        mediaCover = event.imageLogo,
+                        eventOwner = event.ownerName,
+                        link = event.link,
+                        quota = event.quota,
+                        registrants = event.registrants,
+                    )
                 }
+
                 _eventList.value = upcomingEvents
             } catch (e: Exception) {
                 _errorMessage.value = "Error: ${e.message}"

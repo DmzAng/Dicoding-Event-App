@@ -11,4 +11,9 @@
     <string name="register_here">Register Here!</string>
     <string name="dicoding_event">Dicoding Event</string>
     <string name="recomended_event_for_you">Recomended Event For You!</string>
+    <string name="favorite_event">Favorite Event</string>
+    <string name="fab_add_fav">Add Favorite Event</string>
+    <string name="favorite">Favorite</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="setting">Setting</string>
 </resources>

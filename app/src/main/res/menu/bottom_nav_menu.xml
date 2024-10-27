@@ -11,9 +11,15 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_clear_event" />
 
-<!--    <item-->
-<!--        android:id="@+id/navigation_notifications"-->
-<!--        android:icon="@drawable/ic_notifications_black_24dp"-->
-<!--        android:title="@string/title_notifications" />-->
+    <item
+        android:id="@+id/navtigation_favorite"
+        android:icon="@drawable/baseline_favorite_24"
+        android:title="@string/favorite"/>
+
+    <item
+        android:id="@+id/navtigation_setting"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="@string/setting"
+        />
 
 </menu>

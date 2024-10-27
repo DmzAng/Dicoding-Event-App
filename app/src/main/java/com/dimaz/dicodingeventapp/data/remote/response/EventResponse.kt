@@ -1,4 +1,4 @@
-package com.dimaz.dicodingeventapp.data.response
+package com.dimaz.dicodingeventapp.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 

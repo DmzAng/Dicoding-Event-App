@@ -3,35 +3,45 @@ package com.dimaz.dicodingeventapp.ui
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dimaz.dicodingeventapp.data.response.ListEventsItem
+import com.dimaz.dicodingeventapp.R
+import com.dimaz.dicodingeventapp.data.local.entity.EventEntity
 import com.dimaz.dicodingeventapp.databinding.EventCardItemBinding
 import com.dimaz.dicodingeventapp.ui.detail.DetailActivity
 
-class EventAdapter : ListAdapter<ListEventsItem, EventAdapter.EventViewHolder>(DIFF_CALLBACK) {
+class EventAdapter(private val isDarkModeActive: Boolean) : ListAdapter<EventEntity, EventAdapter.EventViewHolder>(DIFF_CALLBACK) {
 
-    class EventViewHolder(private val binding: EventCardItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(event: ListEventsItem) {
-            binding.tvEventName.text = event.name
-            binding.tvDescription.text = event.description
-            binding.tvEventDate.text = event.beginTime
+    inner class EventViewHolder(private val binding: EventCardItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: EventEntity) {
+            binding.tvEventName.text = item.name
+            binding.tvDescription.text = item.description
+            binding.tvEventDate.text = item.beginTime
             Glide.with(binding.tvEventImage.context)
-                .load(event.imageLogo)
+                .load(item.mediaCover)
                 .into(binding.tvEventImage)
+
+            binding.cardEvent.setCardBackgroundColor(
+                if (isDarkModeActive) {
+                    ContextCompat.getColor(binding.cardEvent.context, R.color.gray_dark)
+                } else {
+                    ContextCompat.getColor(binding.cardEvent.context, R.color.white)
+                }
+            )
 
             binding.root.setOnClickListener {
                 val intent = Intent(binding.root.context, DetailActivity::class.java).apply {
-                    putExtra(DetailActivity.EXTRA_NAME, event.name)
-                    putExtra(DetailActivity.EXTRA_OWNER, event.ownerName)
-                    putExtra(DetailActivity.EXTRA_DESCRIPTION, event.description)
-                    putExtra(DetailActivity.EXTRA_BEGIN_TIME, event.beginTime)
-                    putExtra(DetailActivity.EXTRA_QUOTA, event.quota)
-                    putExtra(DetailActivity.EXTRA_REGISTRANTS, event.registrants)
-                    putExtra(DetailActivity.EXTRA_IMAGE, event.imageLogo)
-                    putExtra(DetailActivity.EXTRA_LINK, event.link)
+                    putExtra(DetailActivity.EXTRA_NAME, item.name)
+                    putExtra(DetailActivity.EXTRA_OWNER, item.eventOwner)
+                    putExtra(DetailActivity.EXTRA_DESCRIPTION, item.description)
+                    putExtra(DetailActivity.EXTRA_BEGIN_TIME, item.beginTime)
+                    putExtra(DetailActivity.EXTRA_IMAGE, item.mediaCover)
+                    putExtra(DetailActivity.EXTRA_LINK, item.link)
+                    putExtra(DetailActivity.EXTRA_QUOTA, item.quota)
+                    putExtra(DetailActivity.EXTRA_REGISTRANTS, item.registrants)
                 }
                 binding.root.context.startActivity(intent)
             }
@@ -44,18 +54,17 @@ class EventAdapter : ListAdapter<ListEventsItem, EventAdapter.EventViewHolder>(D
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        val event = getItem(position)
-        holder.bind(event)
+        holder.bind(getItem(position))
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListEventsItem>() {
-            override fun areItemsTheSame(oldItem: ListEventsItem, newItem: ListEventsItem): Boolean {
-                return oldItem.id == newItem.id
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<EventEntity>() {
+            override fun areItemsTheSame(oldItem: EventEntity, newItem: EventEntity): Boolean {
+                return oldItem.name == newItem.name
             }
 
-            override fun areContentsTheSame(oldItem: ListEventsItem, newItem: ListEventsItem): Boolean {
-                return oldItem == newItem
+            override fun areContentsTheSame(oldItem: EventEntity, newItem: EventEntity): Boolean {
+                return oldItem.name == newItem.name
             }
         }
     }
